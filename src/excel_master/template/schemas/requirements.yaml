@@ -1,0 +1,38 @@
+name: requirements
+display_name: 需求追踪矩阵
+description: 需求追踪矩阵文档
+columns:
+  - field: id
+    header: 需求ID
+    width: 12
+    required: true
+    auto_generate: true
+  - field: description
+    header: 需求描述
+    width: 40
+    required: true
+  - field: source
+    header: 需求来源
+    width: 15
+    extract:
+      - keywords: [来源, source, 需求来源]
+  - field: priority
+    header: 优先级
+    width: 10
+    default: 中
+    validate: [高, 中, 低]
+    extract:
+      - keywords: [优先级, priority]
+  - field: status
+    header: 状态
+    width: 10
+    default: 待确认
+    validate: [待确认, 已确认, 开发中, 已完成, 已验收]
+  - field: owner
+    header: 负责人
+    width: 12
+    extract:
+      - keywords: [负责人, owner, 责任人]
+  - field: test_cases
+    header: 关联用例
+    width: 20

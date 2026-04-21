@@ -1,0 +1,8 @@
+pyproject.toml
+src/excel_master/__init__.py
+src/excel_master_cli.egg-info/PKG-INFO
+src/excel_master_cli.egg-info/SOURCES.txt
+src/excel_master_cli.egg-info/dependency_links.txt
+src/excel_master_cli.egg-info/entry_points.txt
+src/excel_master_cli.egg-info/requires.txt
+src/excel_master_cli.egg-info/top_level.txt

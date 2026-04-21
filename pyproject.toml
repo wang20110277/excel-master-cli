@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "excel-master-cli"
+version = "0.1.0"
+description = "CLI tool to generate structured Excel documents from text inputs"
+requires-python = ">=3.10"
+dependencies = [
+    "click>=8.1",
+    "openpyxl>=3.1",
+    "python-docx>=1.0",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.scripts]
+epm = "excel_master.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+excel_master = [
+    "assets/templates/*.xlsx",
+    "template/schemas/*.yaml",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

@@ -1,0 +1,44 @@
+name: test-case
+display_name: 测试用例
+description: 软件测试用例文档
+columns:
+  - field: id
+    header: 用例编号
+    width: 12
+    required: true
+    auto_generate: true
+  - field: module
+    header: 所属模块
+    width: 15
+    required: true
+    extract:
+      - keywords: [模块, module, 功能模块, 所属模块]
+  - field: title
+    header: 用例标题
+    width: 30
+    required: true
+  - field: priority
+    header: 优先级
+    width: 10
+    default: 中
+    validate: [高, 中, 低]
+    extract:
+      - keywords: [优先级, priority]
+  - field: precondition
+    header: 前置条件
+    width: 25
+    extract:
+      - keywords: [前置条件, 前提, precondition]
+  - field: steps
+    header: 操作步骤
+    width: 40
+    multiline: true
+  - field: expected
+    header: 预期结果
+    width: 35
+    required: true
+  - field: status
+    header: 状态
+    width: 10
+    default: 待执行
+    validate: [待执行, 执行中, 通过, 失败, 阻塞]

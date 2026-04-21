@@ -1,0 +1,36 @@
+name: project-plan
+display_name: 项目计划表
+description: 项目计划表文档
+columns:
+  - field: id
+    header: 任务ID
+    width: 12
+    required: true
+    auto_generate: true
+  - field: name
+    header: 任务名称
+    width: 30
+    required: true
+  - field: owner
+    header: 负责人
+    width: 12
+    extract:
+      - keywords: [负责人, owner, 责任人]
+  - field: start_date
+    header: 开始日期
+    width: 14
+    extract:
+      - keywords: [开始日期, 开始时间, start]
+  - field: end_date
+    header: 结束日期
+    width: 14
+    extract:
+      - keywords: [结束日期, 结束时间, end]
+  - field: status
+    header: 状态
+    width: 10
+    default: 未开始
+    validate: [未开始, 进行中, 已完成, 已延期, 已取消]
+  - field: notes
+    header: 备注
+    width: 25
