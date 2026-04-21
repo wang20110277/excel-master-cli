@@ -10,6 +10,7 @@ from typing import Any
 from openpyxl import load_workbook
 from openpyxl.styles import Font
 from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.datavalidation import DataValidation
 
 from excel_master.template.loader import Template, TemplateColumn
 
@@ -49,16 +50,30 @@ class XlsxRenderer:
                     cell.font = style["font"]
                     cell.border = style["border"]
                     cell.alignment = style["alignment"]
-                    if style.get("fill"):
-                        cell.fill = style["fill"]
-
-                # Auto-adjust row height for multiline
+                    # Auto-adjust row height for multiline
                 if col_def.multiline and value and isinstance(value, str) and "\n" in value:
                     line_count = value.count("\n") + 1
                     ws.row_dimensions[row_idx].height = max(
                         ws.row_dimensions[row_idx].height or 20,
                         line_count * 18,
                     )
+
+        # Add dropdown validation for columns with validate options
+        for col_idx, col_def in enumerate(self.schema.columns, start=1):
+            if col_def.validate:
+                col_letter = get_column_letter(col_idx)
+                dv = DataValidation(
+                    type="list",
+                    formula1=f'"{",".join(col_def.validate)}"',
+                    allow_blank=True,
+                )
+                dv.error = f"请从下拉列表中选择有效值: {', '.join(col_def.validate)}"
+                dv.errorTitle = "输入无效"
+                dv.prompt = f"请选择: {', '.join(col_def.validate)}"
+                dv.promptTitle = col_def.header
+                last_row = len(records) + 1
+                dv.add(f"{col_letter}2:{col_letter}{last_row}")
+                ws.add_data_validation(dv)
 
         wb.save(str(output_path))
         return output_path
@@ -133,12 +148,10 @@ class XlsxRenderer:
                 size=font.size,
                 bold=False,
                 italic=font.italic,
-                color=font.color,
             )
             styles[col_idx] = {
                 "font": font,
                 "border": copy.copy(cell.border),
                 "alignment": copy.copy(cell.alignment),
-                "fill": copy.copy(cell.fill) if cell.fill and cell.fill.start_color and cell.fill.start_color.rgb and cell.fill.start_color.rgb != "00000000" else None,
             }
         return styles

@@ -78,5 +78,9 @@ def auto_detect_format(path: str) -> str:
     }
     fmt = mapping.get(ext)
     if fmt is None:
-        fmt = "text"
+        p = Path(path)
+        if p.is_dir():
+            fmt = "image"
+        else:
+            fmt = "text"
     return fmt

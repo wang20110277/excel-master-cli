@@ -92,7 +92,7 @@ def create(template, input_path, output_path, fmt, clean):
         source = str(Path(input_path).resolve())
         if not fmt:
             fmt = auto_detect_format(input_path)
-        content = Path(input_path).read_text(encoding="utf-8")
+        content = None if fmt in ("docx", "image") else Path(input_path).read_text(encoding="utf-8")
 
     # Load template
     registry = TemplateRegistry()
@@ -112,7 +112,7 @@ def create(template, input_path, output_path, fmt, clean):
 
     # Parse input
     parser = get_parser(fmt)
-    if input_path != "-" and input_path.endswith(".docx"):
+    if input_path != "-" and (input_path.endswith(".docx") or fmt == "image"):
         result = parser.parse_file(input_path)
     else:
         result = parser.parse(content, source=source)
